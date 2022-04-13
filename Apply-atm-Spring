@@ -1,0 +1,229 @@
+ENTITY:
+
+package com.applyatm.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Table(name = "Applyatm")
+@Entity
+public class ApplyatmEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private long cardnumber;
+	private String nameonyourcard;
+	private long Accountnumber;
+	private long mobilenumber;
+	
+	public ApplyatmEntity() {
+		super();
+	}
+
+	public ApplyatmEntity(long cardnumber, String nameonyourcard, long Accountnumber, long mobilenumber) {
+		super();
+		this.cardnumber= cardnumber;
+		this.nameonyourcard = nameonyourcard;
+		this.Accountnumber = Accountnumber;
+		this.mobilenumber = mobilenumber;
+		
+	}
+
+	public long getCardnumber() {
+		return cardnumber;
+	}
+
+	public void setCardnumber(long cardnumber) {
+		this.cardnumber = cardnumber;
+	}
+
+	public String getNameonyourcard() {
+		return nameonyourcard;
+	}
+
+	public void setNameonyourcard(String nameonyourcard) {
+		this.nameonyourcard = nameonyourcard;
+	}
+
+	public long getAccountnumber() {
+		return Accountnumber;
+	}
+
+	public void setAccountnumber(long Accountnumber) {
+		this.Accountnumber = Accountnumber;
+	}
+
+	public long getMobilenumber() {
+		return mobilenumber;
+	}
+
+	public void setMobilenumber(long mobilenumber) {
+		this.mobilenumber = mobilenumber;
+	}
+	
+	
+
+}
+
+
+DEMO:
+
+package com.applyatm.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Applyatm {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Applyatm.class, args);
+	}
+
+}
+
+
+CONTROLLER:
+
+package com.applyatm.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.applyatm.demo.Applyatm;
+import com.applyatm.entity.ApplyatmEntity;
+import com.applyatm.service.ApplyatmService;
+@CrossOrigin(origins = "http://localhost:4200/")
+@RestController
+public class Applyatmcontroller {
+	
+	@Autowired
+	private ApplyatmService service;
+	
+	@PostMapping("/saveDetails")
+	public ResponseEntity<ApplyatmEntity> saveDetails(@RequestBody ApplyatmEntity atm){
+	System.out.println(atm);
+	return new ResponseEntity<ApplyatmEntity>(service.saveDetails(atm),HttpStatus.OK);
+	}
+	
+
+}
+REPOSITORY:
+
+
+package com.applyatm.repository;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.applyatm.demo.Applyatm;
+import com.applyatm.entity.ApplyatmEntity;
+
+@Repository
+public interface ApplyatmRepository extends CrudRepository<ApplyatmEntity,Integer> {
+	
+	
+	
+
+}
+
+
+SERVICE:
+
+package com.applyatm.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.applyatm.demo.Applyatm;
+import com.applyatm.entity.ApplyatmEntity;
+import com.applyatm.repository.ApplyatmRepository;
+
+@Service
+public class ApplyatmService {
+	@Autowired
+	ApplyatmRepository erepo;
+	
+	public ApplyatmEntity saveDetails(ApplyatmEntity atm) {
+		return erepo.save(atm);
+	}
+
+}
+
+.PROPERTIES:
+
+server.port=9002
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.driver-class-name= oracle.jdbc.driver.OracleDriver
+spring.datasource.username=system
+spring.datasource.password=akhi
+
+pom.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.5</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.myapp</groupId>
+	<artifactId>demo-1</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>demo-1</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+		<groupId>com.oracle.database.jdbc</groupId>
+		<artifactId>ojdbc8</artifactId>
+		<scope>runtime</scope>
+		</dependency>
+	
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

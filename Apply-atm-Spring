@@ -162,11 +162,7 @@ public class ApplyatmService {
 .PROPERTIES:
 
 server.port=9002
-spring.jpa.hibernate.ddl-auto=update
-spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
-spring.datasource.driver-class-name= oracle.jdbc.driver.OracleDriver
-spring.datasource.username=system
-spring.datasource.password=akhi
+
 
 pom.xml:
 <?xml version="1.0" encoding="UTF-8"?>
@@ -197,9 +193,9 @@ pom.xml:
 		<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-		<groupId>com.oracle.database.jdbc</groupId>
-		<artifactId>ojdbc8</artifactId>
-		<scope>runtime</scope>
+		<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 	
 
